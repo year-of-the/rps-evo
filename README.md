@@ -35,3 +35,43 @@ This function takes a population size and creates a series of random chromosomes
 ### evolve
 
 This function takes a population, evaluates each chromosome's fitness, selects the survivors, creates a new population from the survivors and some combination of their clones, offspring, and mutations that is of the same size as the original input population. Then, returns the newer, fitter, population.
+
+## fitness specs
+
+For your cellular automita/game/ecosystem you need to define the rules of how cells will change from one unit of time to the next. Below are the specs for the functions you'll need to do that.
+
+### decodeChromosomeToBoard
+
+Takes a chromosome and converts it into a baord structure, then returns the board.
+
+### locateNearestPreditor
+
+Takes a cells coordinates and a board, and finds the nearest preditor's location. The preditor is based on what type of thing is in the specified cell (so if rock, then find nearest paper). Return `null` if no preditors are on board
+
+### locateNMearestPrey
+
+Same as above, but instead of returning the location of the nearest preditory it returns the location of the nearest prey.
+
+### listEmptyAdjacentCells
+
+Takes an x,y coordinate and a board and lists the cells next to that coordinate which are empty. This should return only the cells which the occupant of the current cell might be able to move to.
+
+### listAdjacentPrey
+
+Same as above but lists the prey rather than empty neighbors. Like above, it should list only the coordinates of cells containing prey which could be consumed, so if diagonals are not allowed to be consumed, don't list them.
+
+### listAdjacentPreditors
+
+Same as above but for preditors.
+
+### selectNextMove
+
+This take coordinates and a board, and should return the operative information you need to decide how to change the local state around those coordinates. For instance, you may decide that a cell has the option to either move OR reproduce (if reproduction is an option). So given a cell which has a preditor 2 cells away, and an adjacent prey, it cannot safely reproduce because if it does the preditor will become adjacent and then consume it on the next turn. You'll have to disambiguate the rules of the game and the decision system for livign cells in this function.
+
+### incrementTime
+
+Takes a baord and returns a new board (no updating in place). The new board should reflect all the changes expected to happen in one increment fo time since the input board. You'll need to determine an order of operations in this function. You may for instance decide that hunting/reproducing occurs before movements. I would reccomend a decision about that because you need to have a deterministic ruleset. If a preditor adjacent to a prey would eat it, but the prey adjacent to the preditor would move away from the poreditor, one must happen before the other, as they are mutually exclusive.
+
+### detectDone
+
+Takes a board and decides if that board has anymore moves or is a collapsed ecosystem. There is no point in counting after rock, paper, or scissors have dominated the rest.
